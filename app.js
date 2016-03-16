@@ -19,7 +19,10 @@ angular.module('app').service('ProductsService', function($q, $timeout){
       deferred.resolve([
         {id: 0, color: 'green', picture: 'static/images/t_shirt_green.jpeg'},
         {id: 1, color: 'red', picture: 'static/images/t_shirt_red.jpeg'},
-        {id: 2, color: 'blue', picture: 'static/images/t_shirt_blue.jpeg'}
+        {id: 2, color: 'blue', picture: 'static/images/t_shirt_blue.jpeg'},
+        {id: 3, color: 'white', picture: 'static/images/white_collared_shirt.jpg'},
+        {id: 4, color: 'blue', picture: 'static/images/blue_collared_shirt.jpg'},
+        {id: 5, color: 'red', picture: 'static/images/red_collared_shirt.jpg'}
       ]);
     }, 500);
 
