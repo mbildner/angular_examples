@@ -1,0 +1,36 @@
+<html ng-app="app">
+  <head>
+    <link rel="stylesheet" href="bootstrap.min.css"></link>
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="HomePageCtrl">
+    <div class="container-fluid">
+      <div class="jumbotron">
+        <h1>Pivotal Labs Store</h1>
+        <p>we sell shit</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4" ng-repeat="shirt in pivotalTShirts">
+          <div class="thumbnail">
+            <img ng-src="{{ shirt.picture }}" alt="{{ shirt.color }} shirt">
+            <div class="caption">
+              <h3>{{ shirt.color }}</h3>
+              <p></p>
+              <p>
+                <div
+                  ng-click="shoppingCard.push(shirt.id)"
+                  class="btn btn-primary"
+                  role="button"
+                >Add to cart</div>
+              </p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </body>
+</html>
+
