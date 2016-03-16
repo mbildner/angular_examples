@@ -17,6 +17,34 @@
         <p>we sell shit</p>
       </div>
 
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Hidden Colors</h3>
+        </div>
+        <div class="panel-body">
+          <div ng-repeat="color in permittedColors"
+             class="btn btn-default"
+             ng-click="permittedColors.splice($index, 1); hiddenColors.push(color);"
+             >
+             Hide {{ color }}!
+            </div>
+        </div>
+
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Shown Colors</h3>
+        </div>
+        <div class="panel-body">
+          <div ng-repeat="color in hiddenColors"
+            class="btn btn-default"
+            ng-click="hiddenColors.splice($index, 1); permittedColors.push(color);"
+          >
+            Show {{ color }}!
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-4">
           <div ng-disabled="!shoppingCart.length" class="btn btn-primary">

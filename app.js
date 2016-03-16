@@ -7,6 +7,9 @@ angular.module('app').controller('HomePageCtrl', function($scope, ProductsServic
   $scope.pivotalBeanies = [];
   $scope.shoppingCart = [];
 
+  $scope.hiddenColors = [];
+  $scope.permittedColors = ['red', 'blue', 'green', 'white'];
+
   ProductsService.shirts().then(function(shirts){
     $scope.pivotalTShirts = shirts;
   });
