@@ -4,6 +4,7 @@ angular.module('app', []);
 
 angular.module('app').controller('HomePageCtrl', function($scope, ProductsService){
   $scope.pivotalTShirts = [];
+  $scope.shoppingCart = [];
 
   ProductsService.shirts().then(function(shirts){
     $scope.pivotalTShirts = shirts;

@@ -3,6 +3,11 @@
     <link rel="stylesheet" href="bootstrap.min.css"></link>
     <script src="angular.min.js"></script>
     <script src="app.js"></script>
+    <style>
+      .padding-top-medium {
+        padding-top: 30px;
+      }
+    </style>
   </head>
 
   <body ng-controller="HomePageCtrl">
@@ -13,6 +18,15 @@
       </div>
 
       <div class="row">
+        <div class="col-md-4">
+          <div class="btn btn-primary">
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            <span>Buy {{ shoppingCart.length }} items</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row padding-top-medium">
         <div class="col-md-4" ng-repeat="shirt in pivotalTShirts">
           <div class="thumbnail">
             <img ng-src="{{ shirt.picture }}" alt="{{ shirt.color }} shirt">
@@ -21,7 +35,7 @@
               <p></p>
               <p>
                 <div
-                  ng-click="shoppingCard.push(shirt.id)"
+                  ng-click="shoppingCart.push(shirt.id)"
                   class="btn btn-primary"
                   role="button"
                 >Add to cart</div>
