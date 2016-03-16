@@ -4,14 +4,33 @@ angular.module('app', []);
 
 angular.module('app').controller('HomePageCtrl', function($scope, ProductsService){
   $scope.pivotalTShirts = [];
+  $scope.pivotalBeanies = [];
   $scope.shoppingCart = [];
 
   ProductsService.shirts().then(function(shirts){
     $scope.pivotalTShirts = shirts;
   });
+
+  ProductsService.hats().then(function(hats){
+    $scope.pivotalBeanies = hats;
+  });
 });
 
 angular.module('app').service('ProductsService', function($q, $timeout){
+  this.hats = function(){
+    var deferred = $q.defer();
+
+    $timeout(function(){
+      deferred.resolve([
+        {id: 6, color: 'blue', picture: 'static/images/hat_blue.jpg'},
+        {id: 7, color: 'red', picture: 'static/images/hat_red.jpg'},
+        {id: 8, color: 'heathered', picture: 'static/images/hat_redxgrey_heathered.jpg'}
+      ]);
+    }, 500);
+
+    return deferred.promise;
+  };
+
   this.shirts = function(){
     var deferred = $q.defer();
 

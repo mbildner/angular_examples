@@ -27,6 +27,22 @@
       </div>
 
       <div class="row padding-top-medium">
+        <div class="col-md-4" ng-repeat="beanie in pivotalBeanies">
+          <div class="thumbnail">
+            <img ng-src="{{ beanie.picture }}" alt="{{ beanie.color }} beanie">
+            <div class="caption">
+              <h3>{{ beanie.color }}</h3>
+              <p></p>
+              <p>
+                <div
+                  ng-click="shoppingCart.push(beanie.id)"
+                  class="btn btn-primary"
+                  role="button"
+                >Add to cart</div>
+              </p>
+            </div>
+          </div>
+        </div>
         <div class="col-md-4" ng-repeat="shirt in pivotalTShirts">
           <div class="thumbnail">
             <img ng-src="{{ shirt.picture }}" alt="{{ shirt.color }} shirt">
