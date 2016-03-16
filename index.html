@@ -19,7 +19,7 @@
 
       <div class="row">
         <div class="col-md-4">
-          <div class="btn btn-primary">
+          <div ng-disabled="!shoppingCart.length" class="btn btn-primary">
             <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
             <span>Buy {{ shoppingCart.length }} items</span>
           </div>
