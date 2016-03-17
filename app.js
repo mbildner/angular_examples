@@ -2,13 +2,37 @@
 
 angular.module('app', []);
 
-angular.module('app').controller('HomePageCtrl', function($scope, ProductsService){
+angular.module('app').controller('HomePageCtrl', function($scope, $rootScope){
+  $scope.globalShoppingCart = [];
+
+  $scope.$on('shoppingcartadd', function(event, item){
+    $scope.globalShoppingCart.push(item);
+  });
+});
+
+angular.module('app').controller('LabsEngagementCtrl', function($scope, ProductsService, $rootScope){
+  $scope.engagements = [];
+
+  $scope.addToShoppingCart = function(item){
+    $rootScope.$broadcast('shoppingcartadd', item);
+  };
+
+  ProductsService.engagements().then(function(engagements){
+    $scope.engagements = engagements;
+  });
+});
+
+angular.module('app').controller('ClothingPanelCtrl', function($rootScope, $scope, ProductsService){
   $scope.allClothing = [];
   $scope.shoppingCart = [];
 
   $scope.hiddenColors = [];
 
   $scope.permittedColors = [];
+
+  $scope.addToShoppingCart = function(item){
+    $rootScope.$broadcast('shoppingcartadd', item);
+  };
 
   $scope.$watch('allClothing', function(categories){
     var clothing = flatten(categories);
@@ -27,8 +51,20 @@ angular.module('app').controller('HomePageCtrl', function($scope, ProductsServic
 });
 
 angular.module('app').service('ProductsService', function($q, $timeout){
+  this.engagements = function(){
+    var deferred = $q.defer();
+    $timeout(function(){
+      deferred.resolve([
+        {name: 'Agile', description: 'Testing the methodologies should allow our feedback to code the backlog schedule to the wiki. Given measured metrics, perfectly deciding the patch-level feedback along the distributed project management will periodically build the pair feedback. Documenting the sequences should allow our kanban to groom the domain user story past the chart. Building the iterations should allow our item to learn the business lifecycle beyond the spike.'},
+        {name: 'Startup', description: 'Innovate parallax big data unicorn affordances bootstrapping entrepreneur thinker-maker-doer. Bootstrapping sticky note pair programming paradigm integrate parallax iterate paradigm sticky note. Agile agile intuitive pair programming hacker integrate convergence parallax pivot engaging. Prototype user centered design personas bootstrapping user story bootstrapping user story minimum viable product affordances. Convergence 360 campaign disrupt minimum viable product Steve Jobs actionable insight prototype and late iterate prototype.'},
+        {name: 'Brooklyn', description: 'Schlitz occupy gentrify, cronut echo park street art kogi yuccie roof party chicharrones ennui disrupt sartorial messenger bag. Portland selfies fashion axe synth. Four loko mustache cold-pressed, shoreditch disrupt migas iPhone hashtag brunch semiotics. Pop-up occupy bespoke, single-origin coffee kombucha listicle thundercats before they sold out blue bottle. Banjo bicycle rights slow-carb listicle art party keffiyeh, meditation knausgaard. Roof party retro tumblr pitchfork before they sold out'}
+      ]);
+    });
+    return deferred.promise;
+  };
+
   this.clothing = function(){
-    var allClothingCalls = [onesies(), hats(), shirts()];
+    var allClothingCalls = [hats(), shirts(), onesies()];
 
     var allClothingFinished = $q.all(randomlyDropOne(allClothingCalls));
 
