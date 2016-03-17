@@ -2,6 +2,94 @@
 
 angular.module('app', []);
 
+angular.module('app').directive('homePage', function(){
+  return {
+    restrict: 'E',
+    template: '<div ng-controller="HomePageCtrl">' +
+          '    <div class="container-fluid">' +
+          '      <div class="jumbotron">' +
+          '        <h1>Pivotal Labs Store</h1>' +
+          '        <p>we sell shit</p>' +
+          '      </div>' +
+          '      <div ng-controller="ClothingPanelCtrl">' +
+          '        <div class="panel panel-default">' +
+          '          <div class="panel-heading">' +
+          '            <h3 class="panel-title">Hidden Colors</h3>' +
+          '          </div>' +
+          '          <div class="panel-body">' +
+          '            <div ng-repeat="color in permittedColors"' +
+          '               class="btn btn-default"' +
+          '               ng-click="permittedColors.splice($index, 1); hiddenColors.push(color);"' +
+          '               >' +
+          '               Hide {{ color }}!' +
+          '              </div>' +
+          '          </div>' +
+          '        </div>' +
+          '        <div class="panel panel-default">' +
+          '          <div class="panel-heading">' +
+          '            <h3 class="panel-title">Shown Colors</h3>' +
+          '          </div>' +
+          '          <div class="panel-body">' +
+          '            <div ng-repeat="color in hiddenColors"' +
+          '              class="btn btn-default"' +
+          '              ng-click="hiddenColors.splice($index, 1); permittedColors.push(color);"' +
+          '            >' +
+          '              Show {{ color }}!' +
+          '            </div>' +
+          '          </div>' +
+          '        </div>' +
+          '        <div class="row">' +
+          '          <div class="col-md-4">' +
+          '            <div ng-disabled="!globalShoppingCart.length" class="btn btn-primary">' +
+          '              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>' +
+          '              <span>Buy {{ globalShoppingCart.length }} items</span>' +
+          '            </div>' +
+          '          </div>' +
+          '        </div>' +
+          '        <div div class="row padding-top-medium" ng-repeat="category in allClothing">' +
+          '          <div class="col-md-6">' +
+          '            <div class="col-md-12" ng-repeat="item in category" ng-hide="permittedColors.indexOf(item.color)<0;">' +
+          '              <div class="thumbnail">' +
+          '                <img ng-src="{{ item.picture }}" alt="{{ item.color }}">' +
+          '                <div class="caption">' +
+          '                  <h3>{{ item.color }}</h3>' +
+          '                  <select ng-model="selectedItemSize" ng-show="item.sizes">' +
+          '                    <option ng-repeat="size in item.sizes" value="{{ size }}" >{{size}}</option>' +
+          '                  </select>' +
+          '                  <p></p>' +
+          '                  <p>' +
+          '                    <div' +
+          '                      ng-click="addToShoppingCart({item_id: item.id, size: selectedItemSize})"' +
+          '                      class="btn btn-primary"' +
+          '                      role="button"' +
+          '                    >Add to cart</div>' +
+          '                  </p>' +
+          '                </div>' +
+          '              </div>' +
+          '            </div>' +
+          '          </div>' +
+          '        <div class="col-md-5" ng-controller="LabsEngagementCtrl">' +
+          '          <div class="panel panel-default" ng-repeat="engagement in engagements">' +
+          '            <div class="panel-heading">' +
+          '              <h3 class="panel-title">{{ engagement.name }}</h3>' +
+          '            </div>' +
+          '            <div class="panel-body">' +
+          '              {{ engagement.description }}' +
+          '              <div' +
+          '              ng-click="addToShoppingCart({item_id: item.name})"' +
+          '              class="btn btn-primary"' +
+          '              role="button"' +
+          '              >Add to cart</div>' +
+          '            </div>' +
+          '          </div>' +
+          '        </div>' +
+          '        </div><!-- end ClothingPanelCtrl -->' +
+          '      </div>' +
+          '    </div>'
+  };
+});
+
+
 angular.module('app').controller('HomePageCtrl', function($scope, $rootScope){
   $scope.globalShoppingCart = [];
 
