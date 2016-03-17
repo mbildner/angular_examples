@@ -114,43 +114,48 @@ angular.module('app').directive('clothingPanel', function(ProductsService, $root
   };
 });
 
-angular.module('app').directive('homePage', function(){
+angular.module('app').directive('engagementsPanel', function($rootScope, ProductsService){
   return {
     restrict: 'E',
-    template: '<div>' +
-          '    <div class="container-fluid">' +
-          '      <marketing-header></marketing-header>' +
-          '      <clothing-panel></clothing-panel>' +
-          '        <div class="col-md-5" ng-controller="LabsEngagementCtrl">' +
-          '          <div class="panel panel-default" ng-repeat="engagement in engagements">' +
-          '            <div class="panel-heading">' +
-          '              <h3 class="panel-title">{{ engagement.name }}</h3>' +
-          '            </div>' +
-          '            <div class="panel-body">' +
-          '              {{ engagement.description }}' +
-          '              <div' +
-          '              ng-click="addToShoppingCart({item_id: item.name})"' +
-          '              class="btn btn-primary"' +
-          '              role="button"' +
-          '              >Add to cart</div>' +
-          '            </div>' +
-          '          </div>' +
-          '        </div>' +
-          '      </div>' +
-          '    </div>'
+    template:
+      '        <div class="col-md-5">' +
+      '          <div class="panel panel-default" ng-repeat="engagement in engagements">' +
+      '            <div class="panel-heading">' +
+      '              <h3 class="panel-title">{{ engagement.name }}</h3>' +
+      '            </div>' +
+      '            <div class="panel-body">' +
+      '              {{ engagement.description }}' +
+      '              <div' +
+      '              ng-click="addToShoppingCart({item_id: item.name})"' +
+      '              class="btn btn-primary"' +
+      '              role="button"' +
+      '              >Add to cart</div>' +
+      '            </div>' +
+      '          </div>' +
+      '        </div>',
+    link: function(scope){
+      scope.engagements = [];
+
+      scope.addToShoppingCart = function(item){
+        $rootScope.$broadcast('shoppingcartadd', item);
+      };
+
+      ProductsService.engagements().then(function(engagements){
+        scope.engagements = engagements;
+      });
+    }
   };
 });
 
-angular.module('app').controller('LabsEngagementCtrl', function($scope, ProductsService, $rootScope){
-  $scope.engagements = [];
-
-  $scope.addToShoppingCart = function(item){
-    $rootScope.$broadcast('shoppingcartadd', item);
-  };
-
-  ProductsService.engagements().then(function(engagements){
-    $scope.engagements = engagements;
-  });
+angular.module('app').directive('homePage', function(){
+  return {
+    restrict: 'E',
+    template: '<div class="container-fluid">' +
+              '  <marketing-header></marketing-header>' +
+              '  <clothing-panel></clothing-panel>' +
+              '  <engagement-panel></engagement-panel>' +
+              '  </div>',
+};
 });
 
 angular.module('app').service('ProductsService', function($q, $timeout){
