@@ -2,10 +2,29 @@
 
 angular.module('app', []);
 
+angular.module('app').directive('shoppingCart', function(){
+  return {
+    template: '<div class="row">' +
+              '  <div class="col-md-4">' +
+              '    <div ng-disabled="!globalShoppingCart.length" class="btn btn-primary">' +
+              '      <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>' +
+              '      <span>Buy {{ globalShoppingCart.length }} items</span>' +
+              '    </div>' +
+              '  </div>' +
+              '</div>',
+    link: function(scope){
+      scope.globalShoppingCart = [];
+      scope.$on('shoppingcartadd', function(event, item){
+        scope.globalShoppingCart.push(item);
+      });
+    }
+  };
+});
+
 angular.module('app').directive('homePage', function(){
   return {
     restrict: 'E',
-    template: '<div ng-controller="HomePageCtrl">' +
+    template: '<div>' +
           '    <div class="container-fluid">' +
           '      <div class="jumbotron">' +
           '        <h1>Pivotal Labs Store</h1>' +
@@ -38,14 +57,7 @@ angular.module('app').directive('homePage', function(){
           '            </div>' +
           '          </div>' +
           '        </div>' +
-          '        <div class="row">' +
-          '          <div class="col-md-4">' +
-          '            <div ng-disabled="!globalShoppingCart.length" class="btn btn-primary">' +
-          '              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>' +
-          '              <span>Buy {{ globalShoppingCart.length }} items</span>' +
-          '            </div>' +
-          '          </div>' +
-          '        </div>' +
+          '        <shopping-cart></shopping-cart>' +
           '        <div div class="row padding-top-medium" ng-repeat="category in allClothing">' +
           '          <div class="col-md-6">' +
           '            <div class="col-md-12" ng-repeat="item in category" ng-hide="permittedColors.indexOf(item.color)<0;">' +
@@ -87,15 +99,6 @@ angular.module('app').directive('homePage', function(){
           '      </div>' +
           '    </div>'
   };
-});
-
-
-angular.module('app').controller('HomePageCtrl', function($scope, $rootScope){
-  $scope.globalShoppingCart = [];
-
-  $scope.$on('shoppingcartadd', function(event, item){
-    $scope.globalShoppingCart.push(item);
-  });
 });
 
 angular.module('app').controller('LabsEngagementCtrl', function($scope, ProductsService, $rootScope){
