@@ -4,6 +4,7 @@ angular.module('app', []);
 
 angular.module('app').directive('shoppingCart', function(){
   return {
+    scope: {},
     template: '<div class="row">' +
               '  <div class="col-md-4">' +
               '    <div ng-disabled="!globalShoppingCart.length" class="btn btn-primary">' +
@@ -23,6 +24,7 @@ angular.module('app').directive('shoppingCart', function(){
 
 angular.module('app').directive('marketingHeader', function(){
   return {
+    scope: {},
     template: '<div class="jumbotron">' +
               '  <h1>Pivotal Labs Store</h1>' +
               '  <p>we sell shit</p>' +
@@ -32,6 +34,7 @@ angular.module('app').directive('marketingHeader', function(){
 
 angular.module('app').directive('clothingPanel', function(ProductsService, $rootScope){
   return {
+    scope: {},
     template:
           '      <div>' +
           '        <div class="panel panel-default">' +
@@ -116,6 +119,7 @@ angular.module('app').directive('clothingPanel', function(ProductsService, $root
 
 angular.module('app').directive('engagementsPanel', function($rootScope, ProductsService){
   return {
+    scope: {},
     restrict: 'E',
     template:
       '        <div class="col-md-5">' +
@@ -149,6 +153,7 @@ angular.module('app').directive('engagementsPanel', function($rootScope, Product
 
 angular.module('app').directive('homePage', function(){
   return {
+    scope: {},
     restrict: 'E',
     template: '<div class="container-fluid">' +
               '  <marketing-header></marketing-header>' +

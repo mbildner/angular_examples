@@ -109,14 +109,20 @@ Let's start with some rules:
 1. First, grab literally everything and shove it into one root directive. It's schnasty, but it's the first step to recovery.
 2. Let's extract the shopping cart into its own directive - nice and easy
 	- I see you're using link instead of controller! which should I use?
-		- link. always. and inject anything you need at the top of your directive declaration.
+		- link. always. and inject anything you need at the top of your directive declaration. that way injection magic all happens in one place, and you never wonder whether the exact name of your arguments matters when defining your linker.
 
 3. Let's extract the marketing header
 	- what? even though it's just static markup???
 		- yes. Why? because literally the whole point of this talk is that you have to be dogmatic for angular to be a comfortable environment to work in. just do it.
 
 4. extract the clothing section.
-5. 
+5. extract the engagements section.
+
+Great! We have no more free-floating controllers, and now we're down to a set of directives that use each other. **Note** they are no more or less free of each other's scopes/states than they were before we did this extraction. That comes next.
+
+**Everything gets a private scope**
+
+No matter what, don't share scopes in Angular. It's tempting, and it's something that's strongly encouraged by the api and by the design of angular and by its docs. Do not do it.
 
 
 
