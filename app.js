@@ -9,8 +9,23 @@ angular.module('app').controller('HomePageCtrl', function($scope, ProductsServic
 
   $scope.hiddenColors = [];
 
-  $scope.permittedColors = ['red', 'blue'];
+  $scope.permittedColors = [];
 
+  $scope.$watchCollection('pivotalTShirts', function(shirts){
+    var shirtColors = shirts.map(function(shirt){
+      return shirt.color;
+    });
+    $scope.permittedColors = unique($scope.permittedColors.concat(shirtColors));
+  });
+
+  $scope.$watchCollection('pivotalBeanies', function(beanies){
+    var beanieColors = beanies.map(function(beanie){
+      return beanie.color;
+    });
+    $scope.permittedColors = unique($scope.permittedColors.concat(beanieColors));
+  });
+
+  // initial fetch from our server
   ProductsService.shirts().then(function(shirts){
     $scope.pivotalTShirts = shirts;
   });
@@ -52,3 +67,13 @@ angular.module('app').service('ProductsService', function($q, $timeout){
     return deferred.promise;
   };
 });
+
+function unique(array){
+  var holder = {};
+
+  array.forEach(function(item){
+    holder[item] = true;
+  });
+
+  return Object.keys(holder);
+}
