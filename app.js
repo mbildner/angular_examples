@@ -3,42 +3,54 @@
 angular.module('app', []);
 
 angular.module('app').controller('HomePageCtrl', function($scope, ProductsService){
-  $scope.pivotalTShirts = [];
-  $scope.pivotalBeanies = [];
+  $scope.allClothing = [];
   $scope.shoppingCart = [];
 
   $scope.hiddenColors = [];
 
   $scope.permittedColors = [];
 
-  $scope.$watchCollection('pivotalTShirts', function(shirts){
-    var shirtColors = shirts.map(function(shirt){
-      return shirt.color;
-    });
-    $scope.permittedColors = unique($scope.permittedColors.concat(shirtColors));
-  });
+  $scope.$watch('allClothing', function(categories){
+    var clothing = flatten(categories);
 
-  $scope.$watchCollection('pivotalBeanies', function(beanies){
-    var beanieColors = beanies.map(function(beanie){
-      return beanie.color;
+    var allColors = clothing.map(function(item){
+      return item.color;
     });
-    $scope.permittedColors = unique($scope.permittedColors.concat(beanieColors));
+
+    $scope.permittedColors = unique($scope.permittedColors.concat(allColors));
   });
 
   // initial fetch from our server
-  ProductsService.shirts().then(function(shirts){
-    $scope.pivotalTShirts = shirts;
-  });
-
-  ProductsService.hats().then(function(hats){
-    $scope.pivotalBeanies = hats;
+  ProductsService.clothing().then(function(clothing){
+    $scope.allClothing = clothing;
   });
 });
 
 angular.module('app').service('ProductsService', function($q, $timeout){
-  this.hats = function(){
+  this.clothing = function(){
+    var allClothingCalls = [onesies(), hats(), shirts()];
+
+    var allClothingFinished = $q.all(randomlyDropOne(allClothingCalls));
+
+    return allClothingFinished;
+  };
+
+  function onesies (){
     var deferred = $q.defer();
 
+    $timeout(function(){
+      deferred.resolve([
+        {id: 9, color: 'pink', picture: 'static/images/onesie_pink.jpg'},
+        {id: 10, color: 'blue', picture: 'static/images/onesie_blue.jpg'}
+      ]);
+
+    }, 500);
+
+    return deferred.promise;
+  };
+
+  function hats (){
+    var deferred = $q.defer();
     $timeout(function(){
       deferred.resolve([
         {id: 6, color: 'blue', picture: 'static/images/hat_blue.jpg'},
@@ -48,9 +60,9 @@ angular.module('app').service('ProductsService', function($q, $timeout){
     }, 500);
 
     return deferred.promise;
-  };
+  }
 
-  this.shirts = function(){
+  function shirts (){
     var deferred = $q.defer();
 
     $timeout(function(){
@@ -65,7 +77,7 @@ angular.module('app').service('ProductsService', function($q, $timeout){
     }, 500);
 
     return deferred.promise;
-  };
+  }
 });
 
 function unique(array){
@@ -76,4 +88,15 @@ function unique(array){
   });
 
   return Object.keys(holder);
+}
+
+function randomlyDropOne(array){
+  array.splice(Math.round(Math.random() * array.length), 1);
+  return array;
+}
+
+function flatten (array){
+  return array.reduce(function(collector, subArray){
+    return collector.concat(subArray);
+  }, []);
 }
