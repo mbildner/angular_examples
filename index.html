@@ -76,10 +76,13 @@
             <img ng-src="{{ shirt.picture }}" alt="{{ shirt.color }} shirt">
             <div class="caption">
               <h3>{{ shirt.color }}</h3>
+              <select ng-model="selectedShirtSize">
+                <option ng-repeat="size in shirt.sizes" value="{{ size }}" >{{size}}</option>
+              </select>
               <p></p>
               <p>
                 <div
-                  ng-click="shoppingCart.push(shirt.id)"
+                  ng-click="shoppingCart.push({item_id: shirt.id, size: selectedShirtSize})"
                   class="btn btn-primary"
                   role="button"
                 >Add to cart</div>
