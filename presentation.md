@@ -124,7 +124,10 @@ Great! We have no more free-floating controllers, and now we're down to a set of
 
 No matter what, don't share scopes in Angular. It's tempting, and it's something that's strongly encouraged by the api and by the design of angular and by its docs. Do not do it.
 
+**Now for the fun part**
 
+People paying attention at home will notice that we are about to hit a wall: if everything is a directive, and everything gets a private scope, how are elements of collections going to signal to their parents that they want to interact with the outside world?
 
+e.g. how are individual clothing items going to get added to the shopping cart?
   			
     			
