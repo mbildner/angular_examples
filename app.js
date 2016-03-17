@@ -21,16 +21,19 @@ angular.module('app').directive('shoppingCart', function(){
   };
 });
 
-angular.module('app').directive('homePage', function(){
+angular.module('app').directive('marketingHeader', function(){
   return {
-    restrict: 'E',
-    template: '<div>' +
-          '    <div class="container-fluid">' +
-          '      <div class="jumbotron">' +
-          '        <h1>Pivotal Labs Store</h1>' +
-          '        <p>we sell shit</p>' +
-          '      </div>' +
-          '      <div ng-controller="ClothingPanelCtrl">' +
+    template: '<div class="jumbotron">' +
+              '  <h1>Pivotal Labs Store</h1>' +
+              '  <p>we sell shit</p>' +
+              '</div>'
+  };
+});
+
+angular.module('app').directive('clothingPanel', function(ProductsService, $rootScope){
+  return {
+    template:
+          '      <div>' +
           '        <div class="panel panel-default">' +
           '          <div class="panel-heading">' +
           '            <h3 class="panel-title">Hidden Colors</h3>' +
@@ -80,6 +83,44 @@ angular.module('app').directive('homePage', function(){
           '              </div>' +
           '            </div>' +
           '          </div>' +
+          '        </div><!-- end ClothingPanelCtrl -->',
+    link: function(scope){
+      scope.allClothing = [];
+      scope.shoppingCart = [];
+
+      scope.hiddenColors = [];
+
+      scope.permittedColors = [];
+
+      scope.addToShoppingCart = function(item){
+        $rootScope.$broadcast('shoppingcartadd', item);
+      };
+
+      scope.$watch('allClothing', function(categories){
+        var clothing = flatten(categories);
+
+        var allColors = clothing.map(function(item){
+          return item.color;
+        });
+
+        scope.permittedColors = unique(scope.permittedColors.concat(allColors));
+      });
+
+      // initial fetch from our server
+      ProductsService.clothing().then(function(clothing){
+        scope.allClothing = clothing;
+      });
+    }
+  };
+});
+
+angular.module('app').directive('homePage', function(){
+  return {
+    restrict: 'E',
+    template: '<div>' +
+          '    <div class="container-fluid">' +
+          '      <marketing-header></marketing-header>' +
+          '      <clothing-panel></clothing-panel>' +
           '        <div class="col-md-5" ng-controller="LabsEngagementCtrl">' +
           '          <div class="panel panel-default" ng-repeat="engagement in engagements">' +
           '            <div class="panel-heading">' +
@@ -95,7 +136,6 @@ angular.module('app').directive('homePage', function(){
           '            </div>' +
           '          </div>' +
           '        </div>' +
-          '        </div><!-- end ClothingPanelCtrl -->' +
           '      </div>' +
           '    </div>'
   };
@@ -110,34 +150,6 @@ angular.module('app').controller('LabsEngagementCtrl', function($scope, Products
 
   ProductsService.engagements().then(function(engagements){
     $scope.engagements = engagements;
-  });
-});
-
-angular.module('app').controller('ClothingPanelCtrl', function($rootScope, $scope, ProductsService){
-  $scope.allClothing = [];
-  $scope.shoppingCart = [];
-
-  $scope.hiddenColors = [];
-
-  $scope.permittedColors = [];
-
-  $scope.addToShoppingCart = function(item){
-    $rootScope.$broadcast('shoppingcartadd', item);
-  };
-
-  $scope.$watch('allClothing', function(categories){
-    var clothing = flatten(categories);
-
-    var allColors = clothing.map(function(item){
-      return item.color;
-    });
-
-    $scope.permittedColors = unique($scope.permittedColors.concat(allColors));
-  });
-
-  // initial fetch from our server
-  ProductsService.clothing().then(function(clothing){
-    $scope.allClothing = clothing;
   });
 });
 
